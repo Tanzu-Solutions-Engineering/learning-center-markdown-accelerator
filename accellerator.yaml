@@ -1,0 +1,57 @@
+#@ load("@ytt:data", "data")
+accelerator:
+  displayName: Learning Center Markdown Lab
+  description: A starter project to create an Learning Center lab using Markdown for content.
+  iconUrl: https://raw.githubusercontent.com/cdelashmutt-pivotal/logos/main/educates-logo.png
+  tags: 
+  - learningcenter
+  options:
+  - name: title
+    label: Title
+    description: The title used for the workshop session
+    display: true
+    defaultValue: ""
+  - name: description
+    label: Description
+    description: The long workshop description
+    display: true
+    defaultValue: ""
+
+  #! - name:
+  #!   label:
+  #!   description:
+  #!   dataType:
+  #!   inputType:
+  #!   defaultValue:
+  #!   required:
+  #!   display:
+
+engine:
+  merge:
+  - exclude: ["**/accelerator/**"]
+  - include: ["resources/training-portal.yaml"]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: "name: lab-markdown-sample"
+        with: "'name: ' + #artifactId"
+  - include: ["resources/workshop.yaml"]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: "name: lab-markdown-sample"
+        with: "'name: ' + #artifactId"
+      - text: "title: Markdown Sample"
+        with: "'title: ' + #title"
+      - text: "description: A sample workshop using Markdown"
+        with: "'description: ' + #description"
+      - text: "url: https://github.com/eduk8s/lab-markdown-sample"
+        with: "'url: https://github.com/REPLACE_WITH_YOUR_ACCOUNT/' + #artifactId"
+      - text: "files: github.com/eduk8s/lab-markdown-sample"
+        with: "'files: github.com/REPLACE_WITH_YOUR_ACCOUNT/' + #artifactId"
+  - include: ["workshop/workshop.yaml"]
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: "name: Markdown Sample"
+        with: "'name: ' + #title"
