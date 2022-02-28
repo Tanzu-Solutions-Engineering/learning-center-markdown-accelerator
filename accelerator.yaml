@@ -1,4 +1,3 @@
-#@ load("@ytt:data", "data")
 accelerator:
   displayName: Learning Center Markdown Lab
   description: A starter project to create an Learning Center lab using Markdown for content.
